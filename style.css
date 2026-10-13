@@ -32,3 +32,12 @@
 .place-info-card p{font-size:.88rem;color:#687970;margin:7px 0 12px;}
 .directions-button{display:flex;justify-content:center;text-align:center;text-decoration:none;background:#173b35;color:#fff;font-weight:750;border-radius:12px;padding:14px;margin-top:14px;}
 @media(max-width:430px){.place-map-panel iframe{height:270px;}}
+
+/* Versione 12: righe luogo estremamente compatte con link Maps separato */
+.compact-activity-list{gap:3px;}
+.activity.activity-row{gap:0;padding:0 8px;min-height:40px;border-radius:9px;}
+.row-open{display:flex;align-items:center;gap:8px;flex:1;min-width:0;align-self:stretch;text-align:left;border:0;background:transparent;padding:7px 4px;color:inherit;font:inherit;cursor:pointer;}
+.activity-row .activity-icon{font-size:1.05rem;flex:0 0 24px;}
+.activity-row-name{font-size:.88rem;font-weight:600;}
+.row-maps-link{display:flex;align-items:center;justify-content:center;flex:0 0 30px;height:30px;border-radius:7px;text-decoration:none;color:#236b58;font-size:1.15rem;font-weight:800;}
+.row-maps-link:active{background:#e8eee8;}
