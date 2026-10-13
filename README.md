@@ -30,3 +30,5 @@ Versione 5: aggiunta una mappa Google Maps incorporata per ogni località, pulsa
 Versione 6: aggiornate le tratte ferroviarie secondo gli orari comunicati dall’utente per il 28/10, 29/10 e 1/11; evidenziate le prenotazioni ancora da effettuare e aggiunti link discreti ai siti ufficiali Tobu, JR-East, JR-West e JR Miyajima Ferry. Le altre tratte restano da confermare.
 
 \n## Versione 7 — dati locali e backup\n- Le tappe possono essere segnate come visitate e annotate per singolo dispositivo.\n- I dati personali vengono conservati in locale nel browser e restano disponibili offline dopo il primo caricamento.\n- Nella sezione Info utili sono disponibili esportazione e importazione di un file JSON per trasferire i dati tra telefoni.\n- Non c'è sincronizzazione automatica: il programma comune viene aggiornato tramite GitHub Pages; note e visite sono separate finché non si importa/esporta un backup.\n
+
+Versione 8: aggiunta scheda Programma giornaliero, scheda Città separata e marcatura rossa degli spostamenti/prenotazioni da completare.
