@@ -65,7 +65,7 @@ function renderProgram(){
  const schedule=[
   {date:"24 ottobre",city:"Tokyo",id:"tokyo",title:"Arrivo e primo orientamento",day:0,extra:"Arrivo a Tokyo e sistemazione in hotel."},
   {date:"25 ottobre",city:"Tokyo",id:"tokyo",title:"Asakusa e Ueno",day:0},
-  {date:"26 ottobre",city:"Tokyo",id:"tokyo",title:"Harajuku e Shibuya",day:1},
+  {date:"26 ottobre",city:"Tokyo",id:"tokyo",title:"Harajuku e Shibuya",day:1,extra:"🔴 PRENOTAZIONE · Shibuya Sky: ingresso nella fascia 15:40–15:59."},
   {date:"27 ottobre",city:"Tokyo",id:"tokyo",title:"Akihabara e Tokyo Station",day:2},
   {date:"28 ottobre",city:"Nikkō",id:"nikko",title:"Trasferimento e visita di Nikkō",day:0,extra:"Treno Shinjuku → Kinugawa Onsen: 10:31–12:36 (orario comunicato)."},
   {date:"29 ottobre",city:"Nikkō → Tokyo",id:"nikko",title:"Visite e rientro a Tokyo",day:0,extra:"Rientro da Tobu-Nikkō da prenotare; scegliere Asakusa oppure Shinjuku."},
