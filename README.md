@@ -1,20 +1,18 @@
-# Japan Trip 2026
+# Japan Trip 2026 — versione 2
 
-Mini-app web statica per il viaggio in Giappone.
+## Aggiornamenti
+- Rimossa la sezione Checklist.
+- Ogni città ha una scheda con itinerari organizzati per giornata/area.
+- Filtri interattivi: Tutto, Luoghi, Negozi, Ristoranti.
+- Ogni elemento apre una ricerca su Google Maps.
+- La guida è una PWA statica pensata per GitHub Pages.
 
-## Pubblicazione gratuita con GitHub Pages
-1. Crea un repository pubblico chiamato `japan-trip-2026`.
-2. Carica tutti i file e la cartella `icons` nella radice del repository.
-3. Vai in **Settings → Pages**.
-4. In **Build and deployment**, scegli **Deploy from a branch**.
-5. Seleziona il branch `main` e la cartella `/(root)`, poi salva.
-6. Attendi il completamento della pubblicazione e apri l'URL mostrato da GitHub Pages.
+## Aggiornare il repository
+Carica e sostituisci nella radice del repository `index.html`, `style.css`, `app.js`, `manifest.json`, `sw.js` e la cartella `icons`. Conferma con Commit changes. Non caricare credenziali o dati riservati.
 
-## Installazione su iPhone
-Apri l'URL pubblicato in Safari → Condividi → Aggiungi alla schermata Home → attiva “Apri come app web” se disponibile → Aggiungi.
+## Pubblicazione
+GitHub Pages deve pubblicare dal branch `main`, cartella `/(root)`.
+Dopo il commit, attendi il deployment. Se l'iPhone mostra la vecchia versione, chiudi la web app e riapri il sito; potrebbe essere necessario aggiornare o rimuovere e riaggiungere l'icona alla Home.
 
-## Note
-- Gli orari dei treni e i dettagli di prenotazione non sono compilati perché devono corrispondere ai biglietti effettivi.
-- La checklist usa `localStorage` del browser/dispositivo e non è sincronizzata tra dispositivi.
-- Il service worker memorizza le risorse principali per tentare una consultazione offline dopo la prima apertura online; link a mappe e siti esterni richiedono connessione.
-- Non pubblicare dati personali, codici di prenotazione o documenti riservati in un repository pubblico.
+## Nota
+Gli itinerari sono suggerimenti iniziali per aree geografiche, non prenotazioni né orari verificati. Verifica aperture, prezzi e tempi di spostamento prima della visita.

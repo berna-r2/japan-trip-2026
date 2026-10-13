@@ -1,51 +1,44 @@
-const cities = [
- {id:"tokyo",name:"Tokyo",jp:"東京",date:"24–27 ottobre",emoji:"🏙️",intro:"La metropoli tra quartieri moderni, templi e piccole strade tradizionali.",items:["Organizza le visite per quartiere per ridurre gli spostamenti.","Prepara il trasferimento verso Nikko del 28 ottobre.","Verifica indirizzo e date del soggiorno al MyCUBE."],map:"Tokyo, Japan"},
- {id:"nikko",name:"Nikko",jp:"日光",date:"28–29 ottobre",emoji:"🌲",intro:"Santuari, foreste e paesaggi montani a nord di Tokyo.",items:["Valuta il santuario Toshogu e le attrazioni vicine.","Controlla il collegamento ferroviario di ritorno a Tokyo il 29 ottobre.","Verifica la stazione di partenza e l'eventuale prenotazione."],map:"Nikko Toshogu Shrine, Japan"},
- {id:"kanazawa",name:"Kanazawa",jp:"金沢",date:"30 ottobre – 1 novembre",emoji:"🏯",intro:"Giardini storici, case da tè e quartieri tradizionali.",items:["30 ottobre: Tokyo → Kanazawa con Hokuriku Shinkansen.","Valuta Kenrokuen e il quartiere Higashi Chaya.","1 novembre: prepara il trasferimento verso Kyoto via Tsuruga."],map:"Kanazawa, Japan"},
- {id:"kyoto",name:"Kyoto",jp:"京都",date:"1–4 novembre",emoji:"⛩️",intro:"Templi, giardini, torii rossi e quartieri storici.",items:["Raggruppa le visite per zona e controlla gli orari di apertura.","Valuta Fushimi Inari, Higashiyama e Arashiyama secondo le giornate disponibili.","4 novembre: trasferimento a Hiroshima; partenza indicativa 09:00–10:00 da verificare."],map:"Kyoto, Japan"},
- {id:"hiroshima",name:"Hiroshima",jp:"広島",date:"4–5 novembre",emoji:"🕊️",intro:"Una visita importante al Parco e al Museo del Memoriale della Pace.",items:["4 novembre: arrivo da Kyoto e sistemazione.","5 novembre mattina: Atomic Bomb Dome, Parco e Museo del Memoriale della Pace.","Controlla biglietti, orari e percorso per il giorno successivo."],map:"Hiroshima Peace Memorial Park, Japan"},
- {id:"miyajima",name:"Miyajima",jp:"宮島",date:"5 novembre",emoji:"⛩️",intro:"L'isola del grande torii sul mare e del santuario di Itsukushima.",items:["Raggiungi Miyamaguchi in treno e prosegui in traghetto.","Controlla orari del traghetto e marea per il torii.","Conferma dove dormirai la sera del 5 novembre e il trasferimento del 6."],map:"Itsukushima Shrine, Miyajima, Japan"},
- {id:"osaka",name:"Osaka",jp:"大阪",date:"6–8 novembre",emoji:"🍜",intro:"Cibo di strada, canali illuminati e quartieri vivaci.",items:["6 novembre: trasferimento dalla zona di Hiroshima/Miyajima.","Esplora Namba e Dotonbori in base al tempo disponibile.","Verifica indirizzo e check-in del R Hotel Honmachi."],map:"Honmachi, Osaka, Japan"}
+const cities=[
+{id:"tokyo",name:"Tokyo",jp:"東京",date:"24–27 ottobre",emoji:"🏙️",intro:"Quartieri moderni, templi, negozi specializzati e cucina giapponese.",map:"Tokyo, Japan",days:[
+{title:"Giorno 1 · Asakusa e Ueno",area:"Tradizione · passeggiata",items:[
+{type:"place",name:"Sensō-ji e Nakamise-dōri",desc:"Tempio storico e strada di bancarelle tradizionali. Meglio arrivare al mattino.",map:"Senso-ji, Tokyo"},
+{type:"place",name:"Parco di Ueno",desc:"Grande parco cittadino, musei e passeggiate; scegli le tappe in base agli interessi.",map:"Ueno Park, Tokyo"},
+{type:"shop",name:"Kappabashi Kitchen Street",desc:"Negozi di coltelli da cucina, ceramiche e utensili: interessante per oggetti artigianali.",map:"Kappabashi Dougu Street, Tokyo"},
+{type:"food",name:"Ameyoko",desc:"Zona vivace con piccoli locali, street food e negozi vicino a Ueno.",map:"Ameyoko, Tokyo"}]},
+{title:"Giorno 2 · Harajuku e Shibuya",area:"Moda · cultura pop",items:[
+{type:"place",name:"Meiji Jingū",desc:"Santuario immerso nel verde; visita tranquilla al mattino.",map:"Meiji Jingu, Tokyo"},
+{type:"shop",name:"Takeshita Street",desc:"Via commerciale di Harajuku con negozi giovani e snack.",map:"Takeshita Street, Tokyo"},
+{type:"place",name:"Shibuya Crossing e Hachikō",desc:"I classici punti di riferimento di Shibuya.",map:"Shibuya Scramble Crossing, Tokyo"},
+{type:"food",name:"Nonbei Yokocho",desc:"Vicolo con piccoli bar e locali; controlla orari e regole d'accesso.",map:"Nonbei Yokocho, Tokyo"}]},
+{title:"Giorno 3 · Akihabara e Tokyo Station",area:"Elettronica · shopping",items:[
+{type:"shop",name:"Akihabara Electric Town",desc:"Elettronica, manga, anime e negozi specializzati: scegli i negozi in base a ciò che cerchi.",map:"Akihabara Electric Town, Tokyo"},
+{type:"shop",name:"Kanda Myojin",desc:"Santuario vicino ad Akihabara, spesso abbinabile alla visita della zona.",map:"Kanda Myojin, Tokyo"},
+{type:"place",name:"Tokyo Station e Marunouchi",desc:"Architettura della stazione, gallerie commerciali e passeggiata serale.",map:"Tokyo Station, Tokyo"},
+{type:"food",name:"Tokyo Ramen Street",desc:"Area di ristoranti ramen all'interno del complesso della stazione; verifica orari e code.",map:"Tokyo Ramen Street, Tokyo"}]},
+{title:"Giorno 4 · Da definire",area:"Giornata flessibile",items:[
+{type:"place",name:"Tokyo Skytree oppure un museo",desc:"Scegli in base al meteo e alle prenotazioni disponibili.",map:"Tokyo Skytree, Tokyo"},
+{type:"shop",name:"Ginza",desc:"Grandi magazzini, design e negozi di fascia alta.",map:"Ginza, Tokyo"},
+{type:"food",name:"Depachika",desc:"Piani alimentari dei grandi magazzini: ottimi per assaggiare specialità e acquistare snack.",map:"Nihombashi Mitsukoshi, Tokyo"}]}]},
+{id:"nikko",name:"Nikko",jp:"日光",date:"28–29 ottobre",emoji:"🌲",intro:"Santuari, foreste e paesaggi montani.",days:[{title:"Visite da organizzare",area:"Natura · patrimonio",items:[{type:"place",name:"Santuario Tōshō-gū",desc:"Complesso famoso per le decorazioni elaborate.",map:"Nikko Toshogu Shrine, Japan"},{type:"place",name:"Ponte Shinkyō",desc:"Ponte storico vicino all'area dei santuari.",map:"Shinkyo Bridge, Nikko"},{type:"food",name:"Yuba",desc:"Specialità locale a base di pellicola di soia; cerca un ristorante in zona.",map:"Yuba restaurant Nikko"}]}]},
+{id:"kanazawa",name:"Kanazawa",jp:"金沢",date:"30 ottobre – 1 novembre",emoji:"🏯",intro:"Giardini storici, quartieri tradizionali e artigianato.",days:[{title:"Centro storico",area:"Giardini · tradizione",items:[{type:"place",name:"Giardino Kenrokuen",desc:"Uno dei giardini paesaggistici più celebri del Giappone.",map:"Kenrokuen Garden, Kanazawa"},{type:"place",name:"Castello di Kanazawa",desc:"Area del castello adiacente al giardino.",map:"Kanazawa Castle Park"},{type:"place",name:"Higashi Chaya",desc:"Quartiere storico con case da tè e strade tradizionali.",map:"Higashi Chaya District, Kanazawa"},{type:"shop",name:"Negozi di foglia d'oro e artigianato",desc:"Cerca botteghe locali nel centro storico.",map:"Gold leaf shops Kanazawa"}]}]},
+{id:"kyoto",name:"Kyoto",jp:"京都",date:"1–4 novembre",emoji:"⛩️",intro:"Templi, giardini, torii rossi e quartieri storici.",days:[{title:"Est di Kyoto",area:"Templi · vie storiche",items:[{type:"place",name:"Kiyomizu-dera",desc:"Tempio panoramico; considera di arrivare presto.",map:"Kiyomizu-dera, Kyoto"},{type:"place",name:"Ninenzaka e Sannenzaka",desc:"Strade tradizionali con botteghe e sale da tè.",map:"Ninenzaka, Kyoto"},{type:"food",name:"Nishiki Market",desc:"Mercato gastronomico: verifica orari dei singoli banchi.",map:"Nishiki Market, Kyoto"}]},{title:"Fushimi e sud",area:"Torii · santuari",items:[{type:"place",name:"Fushimi Inari Taisha",desc:"Percorso tra i torii; puoi fare una passeggiata breve o salire più a lungo.",map:"Fushimi Inari Taisha, Kyoto"},{type:"food",name:"Punti ristoro della zona",desc:"Prova specialità locali e controlla gli orari dei locali.",map:"Fushimi Inari restaurants Kyoto"}]},{title:"Arashiyama",area:"Bambù · fiume",items:[{type:"place",name:"Bosco di bambù",desc:"Visita presto per ridurre l'affollamento.",map:"Arashiyama Bamboo Forest, Kyoto"},{type:"place",name:"Ponte Togetsukyō",desc:"Passeggiata sul fiume e dintorni.",map:"Togetsukyo Bridge, Kyoto"}]}]},
+{id:"hiroshima",name:"Hiroshima",jp:"広島",date:"4–5 novembre",emoji:"🕊️",intro:"Memoria storica e cucina locale.",days:[{title:"5 novembre · mattina",area:"Memoriale della Pace",items:[{type:"place",name:"Atomic Bomb Dome",desc:"Edificio memoriale vicino al parco.",map:"Atomic Bomb Dome, Hiroshima"},{type:"place",name:"Parco del Memoriale della Pace",desc:"Dedica tempo alla visita con calma.",map:"Hiroshima Peace Memorial Park"},{type:"place",name:"Museo del Memoriale della Pace",desc:"Controlla orari e modalità d'ingresso aggiornati.",map:"Hiroshima Peace Memorial Museum"},{type:"food",name:"Okonomiyaki alla maniera di Hiroshima",desc:"Specialità locale; scegli un locale in base alla zona e alle code.",map:"Hiroshima style okonomiyaki"}]}]},
+{id:"miyajima",name:"Miyajima",jp:"宮島",date:"5 novembre",emoji:"🌊",intro:"Isola, santuario di Itsukushima e torii sul mare.",days:[{title:"Giornata sull'isola",area:"Santuario · paesaggio",items:[{type:"place",name:"Santuario di Itsukushima",desc:"Verifica orari e condizioni della marea per il panorama del torii.",map:"Itsukushima Shrine, Miyajima"},{type:"place",name:"Omotesandō Shopping Street",desc:"Strada commerciale con souvenir e specialità locali.",map:"Omotesando Shopping Street Miyajima"},{type:"food",name:"Momiji manju e ostriche",desc:"Due specialità dell'isola da cercare nei negozi e ristoranti locali.",map:"Miyajima oyster restaurants"}]}]},
+{id:"osaka",name:"Osaka",jp:"大阪",date:"6–8 novembre",emoji:"🍜",intro:"Street food, quartieri vivaci e shopping.",days:[{title:"Namba e Dotonbori",area:"Cibo · luci",items:[{type:"place",name:"Dotonbori",desc:"Canale, insegne luminose e atmosfera serale.",map:"Dotonbori, Osaka"},{type:"food",name:"Takoyaki e okonomiyaki",desc:"Assaggia le specialità di Osaka nei locali della zona.",map:"Takoyaki Dotonbori Osaka"},{type:"shop",name:"Shinsaibashi-suji",desc:"Lunga galleria commerciale coperta.",map:"Shinsaibashi-suji Shopping Street, Osaka"}]},{title:"Cultura e mercati",area:"Mercati · castello",items:[{type:"place",name:"Castello di Osaka",desc:"Parco e castello; verifica gli orari se vuoi entrare.",map:"Osaka Castle"},{type:"food",name:"Mercato Kuromon",desc:"Mercato noto per pesce, prodotti e snack.",map:"Kuromon Ichiba Market, Osaka"},{type:"shop",name:"Den Den Town",desc:"Zona per elettronica, manga e cultura pop.",map:"Den Den Town, Osaka"}]}]}
 ];
-const tasks = [
- "Verificare prenotazioni Shinkansen e treni espressi",
- "Confermare indirizzi e date degli hotel",
- "Controllare pass ferroviario e biglietti singoli",
- "Salvare le conferme delle prenotazioni sul telefono",
- "Preparare i percorsi delle stazioni su Google Maps",
- "Controllare orari di musei, templi e attrazioni",
- "Preparare una soluzione per pagamenti e contanti",
- "Verificare documenti di viaggio e assicurazione"
-];
-const cityList = document.getElementById("city-list");
-const cityDetail = document.getElementById("city-detail");
-let selected = "tokyo";
-function renderCities(){
- cityList.innerHTML = cities.map(c=>`<button class="city ${c.id===selected?"selected":""}" data-city="${c.id}"><span class="emoji">${c.emoji}</span><b>${c.name}</b><small>${c.date}</small></button>`).join("");
- cityList.querySelectorAll("[data-city]").forEach(btn=>btn.addEventListener("click",()=>{selected=btn.dataset.city;renderCities();}));
- const c=cities.find(x=>x.id===selected);
- cityDetail.innerHTML=`<span class="eyebrow">${c.jp} · ${c.date}</span><h3>${c.emoji} ${c.name}</h3><p>${c.intro}</p><ul>${c.items.map(x=>`<li>${x}</li>`).join("")}</ul><a class="action" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.map)}" target="_blank" rel="noopener">Apri ${c.name} su Google Maps ↗</a>`;
+const labels={all:"Tutto",place:"Luoghi",shop:"Negozi",food:"Ristoranti"};
+const icons={place:"📍",shop:"🛍️",food:"🍜"};
+const list=document.getElementById("city-list"),detail=document.getElementById("city-detail");let selected="tokyo",selectedDay=0,filter="all";
+function renderCities(){list.innerHTML=cities.map(c=>`<button class="city ${c.id===selected?"selected":""}" data-city="${c.id}"><span class="emoji">${c.emoji}</span><b>${c.name}</b><small>${c.date}</small></button>`).join("");list.querySelectorAll("[data-city]").forEach(b=>b.onclick=()=>{selected=b.dataset.city;selectedDay=0;filter="all";renderCities()});renderDetail()}
+function renderDetail(){const c=cities.find(x=>x.id===selected);if(!c)return;const days=c.days||[];if(selectedDay>=days.length)selectedDay=0;const day=days[selectedDay]||{title:"Da completare",area:"",items:[]};
+detail.innerHTML=`<div class="detail-top"><span class="eyebrow">${c.jp} · ${c.date}</span><h3>${c.emoji} ${c.name}</h3><p>${c.intro}</p><a class="action" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.map||c.name+', Japan')}">Apri mappa della città ↗</a></div>
+<div class="day-heading"><span class="eyebrow">ITINERARIO SUGGERITO</span><h4>Organizza la giornata</h4></div>
+<div class="day-tabs">${days.map((d,i)=>`<button class="day-tab ${i===selectedDay?"selected":""}" data-day="${i}">${d.title}</button>`).join("")}</div>
+<p class="area">${day.area||""}</p>
+<div class="filters">${Object.entries(labels).map(([k,v])=>`<button class="filter ${filter===k?"selected":""}" data-filter="${k}">${v}</button>`).join("")}</div>
+<div class="activity-list">${day.items.filter(x=>filter==="all"||x.type===filter).map((x,i)=>`<article class="activity"><div class="activity-icon">${icons[x.type]}</div><div class="activity-body"><span class="category">${labels[x.type==="place"?"place":x.type==="shop"?"shop":"food"].toUpperCase()}</span><h5>${x.name}</h5><p>${x.desc}</p><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x.map)}">Apri in Google Maps ↗</a></div></article>`).join("")||'<p class="muted">Nessuna voce in questa categoria per la giornata selezionata.</p>'}</div>
+<div class="note">L'itinerario è una bozza organizzata per zone. Controlla aperture, prenotazioni e tempi di spostamento prima della visita.</div>`;
+detail.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{selectedDay=Number(b.dataset.day);renderDetail()});detail.querySelectorAll("[data-filter]").forEach(b=>b.onclick=()=>{filter=b.dataset.filter;renderDetail()});
 }
-function renderChecklist(){
- const saved=JSON.parse(localStorage.getItem("japanTripChecklist")||"{}");
- const container=document.getElementById("checklist-items");
- container.innerHTML=tasks.map((t,i)=>`<label class="checkrow ${saved[i]?"done":""}"><input type="checkbox" data-task="${i}" ${saved[i]?"checked":""}><span>${t}</span></label>`).join("");
- container.querySelectorAll("input").forEach(input=>input.addEventListener("change",()=>{
-  const state=JSON.parse(localStorage.getItem("japanTripChecklist")||"{}");
-  state[input.dataset.task]=input.checked;localStorage.setItem("japanTripChecklist",JSON.stringify(state));
-  input.closest(".checkrow").classList.toggle("done",input.checked);updateProgress();
- }));
- updateProgress();
-}
-function updateProgress(){
- const saved=JSON.parse(localStorage.getItem("japanTripChecklist")||"{}");
- const count=tasks.filter((_,i)=>saved[i]).length;
- document.getElementById("progress-text").textContent=`${count}/${tasks.length}`;
- document.getElementById("progress-bar").style.width=`${count/tasks.length*100}%`;
-}
-document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{
- document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b===btn));
- document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===btn.dataset.view));
- window.scrollTo({top:0,behavior:"smooth"});
-}));
-renderCities();renderChecklist();
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===b.dataset.view));window.scrollTo({top:0,behavior:"smooth"})});
+renderCities();
