@@ -19,3 +19,6 @@ Gli itinerari sono suggerimenti iniziali per aree geografiche, non prenotazioni 
 
 
 Aggiornamento: aggiunta la sezione **Ristoranti** con elenco compatto, ricerca testuale, filtro per zona e collegamenti di ricerca a Tabelog e Google Maps. I collegamenti aprono la ricerca per nome: verificare la sede corretta prima di visitare.
+
+
+Aggiornamento v4: intestazione con immagine panoramica del Giappone e titolo “Japan 2026”. Conservata la sezione Ristoranti con link di ricerca a Tabelog e Google Maps.
