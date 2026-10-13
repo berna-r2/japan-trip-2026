@@ -16,3 +16,6 @@ Dopo il commit, attendi il deployment. Se l'iPhone mostra la vecchia versione, c
 
 ## Nota
 Gli itinerari sono suggerimenti iniziali per aree geografiche, non prenotazioni né orari verificati. Verifica aperture, prezzi e tempi di spostamento prima della visita.
+
+
+Aggiornamento: aggiunta la sezione **Ristoranti** con elenco compatto, ricerca testuale, filtro per zona e collegamenti di ricerca a Tabelog e Google Maps. I collegamenti aprono la ricerca per nome: verificare la sede corretta prima di visitare.
