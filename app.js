@@ -32,8 +32,10 @@ const LOCAL_KEY="japan2026-local-data-v1";
 function readLocalData(){try{return JSON.parse(localStorage.getItem(LOCAL_KEY)||'{"visited":{},"notes":{}}')}catch(e){return {visited:{},notes:{}}}}
 function writeLocalData(data){try{localStorage.setItem(LOCAL_KEY,JSON.stringify(data))}catch(e){}}
 function activityKey(city,day,item){return [city,day,item].join("::")}
-const list=document.getElementById("city-list"),detail=document.getElementById("city-detail");let selected="tokyo",selectedDay=0,filter="all";
-function renderCities(){list.innerHTML=cities.map(c=>`<button class="city ${c.id===selected?"selected":""}" data-city="${c.id}"><span class="emoji">${c.emoji}</span><b>${c.name}</b><small>${c.date}</small></button>`).join("");list.querySelectorAll("[data-city]").forEach(b=>b.onclick=()=>{selected=b.dataset.city;selectedDay=0;filter="all";renderCities()});renderDetail()}
+const list=document.getElementById("city-list"),detail=document.getElementById("city-detail");let selected="tokyo",selectedDay=0,filter="all",cityMenuOpen=true;
+const cityMenuToggle=document.getElementById("toggle-city-menu");
+if(cityMenuToggle)cityMenuToggle.onclick=()=>{cityMenuOpen=!cityMenuOpen;list.hidden=!cityMenuOpen;cityMenuToggle.setAttribute("aria-expanded",String(cityMenuOpen));cityMenuToggle.setAttribute("aria-label",cityMenuOpen?"Chiudi menu delle città":"Apri menu delle città");cityMenuToggle.innerHTML=cityMenuOpen?"⌃ <span>Nascondi</span>":"⌄ <span>Mostra città</span>"};
+function renderCities(){list.innerHTML=cities.map(c=>`<button class="city ${c.id===selected?"selected":""}" data-city="${c.id}"><span class="emoji">${c.emoji}</span><b>${c.name}</b><small>${c.date}</small></button>`).join("");list.querySelectorAll("[data-city]").forEach(b=>b.onclick=()=>{selected=b.dataset.city;selectedDay=0;filter="all";renderCities()});list.hidden=!cityMenuOpen;renderDetail()}
 function renderDetail(){const c=cities.find(x=>x.id===selected);if(!c)return;const days=c.days||[];if(selectedDay>=days.length)selectedDay=0;const day=days[selectedDay]||{title:"Da completare",area:"",items:[]};
 const cityQuery=encodeURIComponent(c.map||c.name+', Japan');
 const dayLocations=day.items.map(x=>x.map).filter(Boolean);
