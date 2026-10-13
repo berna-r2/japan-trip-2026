@@ -22,3 +22,6 @@ Aggiornamento: aggiunta la sezione **Ristoranti** con elenco compatto, ricerca t
 
 
 Aggiornamento v4: intestazione con immagine panoramica del Giappone e titolo “Japan 2026”. Conservata la sezione Ristoranti con link di ricerca a Tabelog e Google Maps.
+
+
+Versione 5: aggiunta una mappa Google Maps incorporata per ogni località, pulsante per aprire la mappa esterna e collegamento per aprire in Google Maps l’itinerario giornaliero con le tappe in sequenza. Le mappe incorporate richiedono connessione internet.
