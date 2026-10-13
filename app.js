@@ -28,6 +28,10 @@ const cities=[
 ];
 const labels={all:"Tutto",place:"Luoghi",shop:"Negozi",food:"Ristoranti"};
 const icons={place:"📍",shop:"🛍️",food:"🍜"};
+const LOCAL_KEY="japan2026-local-data-v1";
+function readLocalData(){try{return JSON.parse(localStorage.getItem(LOCAL_KEY)||'{"visited":{},"notes":{}}')}catch(e){return {visited:{},notes:{}}}}
+function writeLocalData(data){try{localStorage.setItem(LOCAL_KEY,JSON.stringify(data))}catch(e){}}
+function activityKey(city,day,item){return [city,day,item].join("::")}
 const list=document.getElementById("city-list"),detail=document.getElementById("city-detail");let selected="tokyo",selectedDay=0,filter="all";
 function renderCities(){list.innerHTML=cities.map(c=>`<button class="city ${c.id===selected?"selected":""}" data-city="${c.id}"><span class="emoji">${c.emoji}</span><b>${c.name}</b><small>${c.date}</small></button>`).join("");list.querySelectorAll("[data-city]").forEach(b=>b.onclick=()=>{selected=b.dataset.city;selectedDay=0;filter="all";renderCities()});renderDetail()}
 function renderDetail(){const c=cities.find(x=>x.id===selected);if(!c)return;const days=c.days||[];if(selectedDay>=days.length)selectedDay=0;const day=days[selectedDay]||{title:"Da completare",area:"",items:[]};
@@ -40,10 +44,33 @@ detail.innerHTML=`<div class="detail-top"><span class="eyebrow">${c.jp} · ${c.d
 <div class="day-tabs">${days.map((d,i)=>`<button class="day-tab ${i===selectedDay?"selected":""}" data-day="${i}">${d.title}</button>`).join("")}</div>
 <p class="area">${day.area||""}</p>
 <div class="filters">${Object.entries(labels).map(([k,v])=>`<button class="filter ${filter===k?"selected":""}" data-filter="${k}">${v}</button>`).join("")}</div>
-<div class="activity-list">${day.items.filter(x=>filter==="all"||x.type===filter).map((x,i)=>`<article class="activity"><div class="activity-icon">${icons[x.type]}</div><div class="activity-body"><span class="category">${labels[x.type==="place"?"place":x.type==="shop"?"shop":"food"].toUpperCase()}</span><h5>${x.name}</h5><p>${x.desc}</p><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x.map)}">Apri in Google Maps ↗</a></div></article>`).join("")||'<p class="muted">Nessuna voce in questa categoria per la giornata selezionata.</p>'}</div>
+<div class="activity-list">${day.items.filter(x=>filter==="all"||x.type===filter).map((x,i)=>`<article class="activity" data-activity-key="${activityKey(c.id,selectedDay,x.name)}"><div class="activity-icon">${icons[x.type]}</div><div class="activity-body"><span class="category">${labels[x.type==="place"?"place":x.type==="shop"?"shop":"food"].toUpperCase()}</span><h5>${x.name}</h5><p>${x.desc}</p><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(x.map)}">Apri in Google Maps ↗</a><div class="activity-tools"><label><input type="checkbox" class="visited-toggle"> Visitato</label><input type="text" class="activity-note" placeholder="Nota personale…" aria-label="Nota personale per ${x.name}"></div></div></article>`).join("")||'<p class="muted">Nessuna voce in questa categoria per la giornata selezionata.</p>'}</div>
 <div class="route-launch"><div><b>Segui le tappe della giornata</b><p class="small">Apri il percorso su Google Maps con le tappe in ordine.</p></div><a class="action" target="_blank" rel="noopener" href="${routeUrl}">Apri itinerario ↗</a></div>
 <div class="note">L'itinerario è una bozza organizzata per zone. Controlla aperture, prenotazioni e tempi di spostamento prima della visita.</div>`;
 detail.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{selectedDay=Number(b.dataset.day);renderDetail()});detail.querySelectorAll("[data-filter]").forEach(b=>b.onclick=()=>{filter=b.dataset.filter;renderDetail()});
+const localData=readLocalData();
+detail.querySelectorAll("[data-activity-key]").forEach(card=>{
+ const key=card.dataset.activityKey, toggle=card.querySelector(".visited-toggle"), note=card.querySelector(".activity-note");
+ toggle.checked=!!localData.visited[key];card.classList.toggle("done",toggle.checked);
+ note.value=localData.notes[key]||"";
+ toggle.addEventListener("change",()=>{const d=readLocalData();d.visited[key]=toggle.checked;writeLocalData(d);card.classList.toggle("done",toggle.checked)});
+ note.addEventListener("change",()=>{const d=readLocalData();if(note.value.trim())d.notes[key]=note.value.trim();else delete d.notes[key];writeLocalData(d)});
+});
 }
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===b.dataset.view));window.scrollTo({top:0,behavior:"smooth"})});
 renderCities();
+function downloadLocalBackup(){
+ const payload={app:"Japan 2026",version:1,exportedAt:new Date().toISOString(),data:readLocalData()};
+ const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="japan-2026-backup.json";a.click();URL.revokeObjectURL(url);
+ const status=document.getElementById("backup-status");if(status)status.textContent="Backup esportato. Puoi inviare il file a un altro telefono.";
+}
+document.getElementById("export-data")?.addEventListener("click",downloadLocalBackup);
+document.getElementById("import-data")?.addEventListener("change",async e=>{
+ const file=e.target.files&&e.target.files[0];if(!file)return;
+ const status=document.getElementById("backup-status");
+ try{const payload=JSON.parse(await file.text());const d=payload.data||payload;if(!d||typeof d!=="object"||!d.visited||!d.notes)throw new Error("Formato non valido");
+ const current=readLocalData();const merged={visited:{...current.visited,...d.visited},notes:{...current.notes,...d.notes}};writeLocalData(merged);if(status)status.textContent="Backup importato. Le note e le visite sono state unite ai dati presenti.";renderDetail();
+ }catch(err){if(status)status.textContent="Impossibile importare: seleziona un backup Japan 2026 valido."}
+ e.target.value="";
+});
