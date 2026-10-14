@@ -65,22 +65,22 @@ function renderProgram(){
  const schedule=[
   {date:"24 ottobre",city:"Tokyo",id:"tokyo",title:"Arrivo e primo orientamento",day:0,extra:"Arrivo a Tokyo e sistemazione in hotel."},
   {date:"25 ottobre",city:"Tokyo",id:"tokyo",title:"Asakusa e Ueno",day:0},
-  {date:"26 ottobre",city:"Tokyo",id:"tokyo",title:"Harajuku e Shibuya",day:1,extra:"🔴 PRENOTAZIONE · Shibuya Sky: ingresso nella fascia 15:40–15:59."},
+  {date:"26 ottobre",city:"Tokyo",id:"tokyo",title:"Harajuku e Shibuya",day:1,extra:"🗓️ PRENOTAZIONE · Shibuya Sky: ingresso nella fascia 15:40–15:59."},
   {date:"27 ottobre",city:"Tokyo",id:"tokyo",title:"Akihabara e Tokyo Station",day:2},
   {date:"28 ottobre",city:"Nikkō",id:"nikko",title:"Trasferimento e visita di Nikkō",day:0,extra:"Treno Shinjuku → Kinugawa Onsen: 10:31–12:36 (orario comunicato)."},
-  {date:"29 ottobre",city:"Nikkō → Tokyo",id:"nikko",title:"Visite e rientro a Tokyo",day:0,extra:"Rientro da Tobu-Nikkō da prenotare; scegliere Asakusa oppure Shinjuku."},
-  {date:"30 ottobre",city:"Tokyo → Kanazawa",id:"kanazawa",title:"Trasferimento a Kanazawa",day:0,extra:"Hokuriku Shinkansen: prenotazione e orario da confermare."},
+  {date:"29 ottobre",city:"Nikkō → Tokyo",id:"nikko",title:"Visite e rientro a Tokyo",day:0,extra:"🗓️ Da prenotare: rientro da Tobu-Nikkō; scegliere Asakusa oppure Shinjuku."},
+  {date:"30 ottobre",city:"Tokyo → Kanazawa",id:"kanazawa",title:"Trasferimento a Kanazawa",day:0,extra:"🗓️ Hokuriku Shinkansen: prenotazione e orario da confermare."},
   {date:"31 ottobre",city:"Kanazawa",id:"kanazawa",title:"Centro storico e giardini",day:0},
   {date:"1 novembre",city:"Kanazawa → Kyoto",id:"kyoto",title:"Trasferimento a Kyoto",day:0,extra:"Tsuruga → Kyoto indicato 08:37–09:34; cambio di 8 minuti."},
-  {date:"2 novembre",city:"Kyoto",id:"kyoto",title:"Kyoto e cooking class",day:0,extra:"Cooking class Manryo alle 10:00: prenotazione effettuata da Silvia."},
+  {date:"2 novembre",city:"Kyoto",id:"kyoto",title:"Kyoto e cooking class",day:0,extra:"🗓️ Cooking class Manryo alle 10:00: prenotazione effettuata da Silvia."},
   {date:"3 novembre",city:"Kyoto",id:"kyoto",title:"Fushimi Inari e sud di Kyoto",day:1},
-  {date:"4 novembre",city:"Kyoto → Hiroshima",id:"hiroshima",title:"Trasferimento a Hiroshima",day:0,extra:"Shinkansen da prenotare; partenza indicativa 09:00–10:00."},
-  {date:"5 novembre",city:"Hiroshima → Miyajima",id:"hiroshima",title:"Memoriale della Pace e Miyajima",day:0,extra:"Tour guidato al museo alle 11:15 prenotato da Silvia; poi traghetto per Miyajima, da verificare."},
-  {date:"6 novembre",city:"Miyajima → Osaka",id:"osaka",title:"Trasferimento a Osaka",day:0,extra:"Treno per Osaka da prenotare in base all'orario di partenza."},
+  {date:"4 novembre",city:"Kyoto → Hiroshima",id:"hiroshima",title:"Trasferimento a Hiroshima",day:0,extra:"🗓️ Shinkansen da prenotare; partenza indicativa 09:00–10:00."},
+  {date:"5 novembre",city:"Hiroshima → Miyajima",id:"hiroshima",title:"Memoriale della Pace e Miyajima",day:0,extra:"🗓️ Tour guidato al museo alle 11:15 prenotato da Silvia; poi traghetto per Miyajima, da verificare."},
+  {date:"6 novembre",city:"Miyajima → Osaka",id:"osaka",title:"Trasferimento a Osaka",day:0,extra:"🗓️ Treno per Osaka da prenotare in base all'orario di partenza."},
   {date:"7 novembre",city:"Osaka",id:"osaka",title:"Namba, Dotonbori e street food",day:0},
   {date:"8 novembre",city:"Osaka",id:"osaka",title:"Ultime visite e partenza",day:1}
  ];
- host.innerHTML=schedule.map(s=>{const c=cities.find(x=>x.id===s.id);const d=c?.days?.[s.day];const items=(d?.items||[]).map(x=>x.name);return `<article class="program-day"><div class="program-day-head"><h3>${s.city}</h3><span class="program-date">${s.date}</span></div><p><strong>${s.title}</strong></p>${s.extra?`<p>${s.extra}</p>`:""}${items.length?`<ul>${items.map(n=>`<li>${n}</li>`).join("")}</ul>`:""}<a href="#" class="program-city-link" data-open-city="${s.id}">Apri dettagli e mappa della città ↗</a></article>`}).join("");
+ host.innerHTML=schedule.map(s=>{const c=cities.find(x=>x.id===s.id);const d=c?.days?.[s.day];const items=(d?.items||[]).map(x=>x.name);return `<article class="program-day"><div class="program-day-head"><h3>${s.city}</h3><span class="program-date">${s.date}</span></div><p><strong>${s.title}</strong></p>${s.extra?`<p class="${/🗓️|prenotaz|prenotat|da prenotare/i.test(s.extra)?"booking-text":""}">${s.extra}</p>`:""}${items.length?`<ul>${items.map(n=>`<li>${n}</li>`).join("")}</ul>`:""}<a href="#" class="program-city-link" data-open-city="${s.id}">Apri dettagli e mappa della città ↗</a></article>`}).join("");
  host.querySelectorAll("[data-open-city]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();selected=a.dataset.openCity;selectedDay=0;filter="all";renderCities();document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.view==="itinerary"));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id==="itinerary"));window.scrollTo({top:0,behavior:"smooth"})}));
 }
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===b.dataset.view));window.scrollTo({top:0,behavior:"smooth"})});

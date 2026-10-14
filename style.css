@@ -41,3 +41,7 @@
 .activity-row-name{font-size:.88rem;font-weight:600;}
 .row-maps-link{display:flex;align-items:center;justify-content:center;flex:0 0 30px;height:30px;border-radius:7px;text-decoration:none;color:#236b58;font-size:1.15rem;font-weight:800;}
 .row-maps-link:active{background:#e8eee8;}
+
+/* Prenotazioni: prefisso calendario e testo blu */
+.booking-text{color:#175cd3!important;font-weight:700!important;background:#eff8ff;border-left:3px solid #2e90fa;padding:8px 10px;border-radius:6px}
+.status.confirmed,.status.pending{color:#175cd3}
