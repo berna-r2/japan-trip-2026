@@ -2,17 +2,23 @@ const restaurants = [{"name":"Nakamura Tokichi Main Branch","desc":"Matcha origi
 const restaurantList=document.getElementById("restaurant-list");
 const restaurantSearch=document.getElementById("restaurant-search");
 const restaurantCity=document.getElementById("restaurant-city");
+const restaurantFavoritesFilter=document.getElementById("restaurant-favorites-filter");
+function readRestaurantPrefs(){try{const d=JSON.parse(localStorage.getItem("japan2026-local-data-v1")||"{}");return Array.isArray(d.favorites)?d.favorites:[]}catch(e){return []}}
+function toggleRestaurantFavorite(name){let data={};try{data=JSON.parse(localStorage.getItem("japan2026-local-data-v1")||"{}")}catch(e){}const fav=new Set(Array.isArray(data.favorites)?data.favorites:[]);fav.has(name)?fav.delete(name):fav.add(name);data.favorites=[...fav];data.visited=data.visited||{};data.notes=data.notes||{};data.checklist=data.checklist||{};localStorage.setItem("japan2026-local-data-v1",JSON.stringify(data));renderRestaurants()}
 function renderRestaurants(){
  const q=(restaurantSearch.value||"").trim().toLocaleLowerCase("it");
- const city=restaurantCity.value;
- const shown=restaurants.filter(r=>(!city||r.city===city)&&(!q||(r.name+" "+r.desc+" "+r.city).toLocaleLowerCase("it").includes(q)));
+ const city=restaurantCity.value;const favOnly=restaurantFavoritesFilter?.value==="favorites";const favorites=new Set(readRestaurantPrefs());
+ const shown=restaurants.filter(r=>(!city||r.city===city)&&(!favOnly||favorites.has(r.name))&&(!q||(r.name+" "+r.desc+" "+r.city).toLocaleLowerCase("it").includes(q)));
  restaurantList.innerHTML=shown.map(r=>{
   const query=encodeURIComponent(r.name+(r.city?" "+r.city+" Japan":" Japan"));
   const tabelog="https://tabelog.com/rst/rstsearch/?sk="+encodeURIComponent(r.name);
   const maps="https://www.google.com/maps/search/?api=1&query="+query;
-  return `<article class="restaurant-row"><div class="restaurant-info"><h3>${r.name}</h3><p>${r.desc}</p><div class="restaurant-meta">${[r.city,r.price].filter(Boolean).join(" · ")}</div></div><div class="restaurant-links"><a href="${tabelog}" target="_blank" rel="noopener">Tabelog ↗</a><a href="${maps}" target="_blank" rel="noopener">Maps ↗</a></div></article>`;
+  const isFav=favorites.has(r.name);
+  return `<article class="restaurant-row"><div class="restaurant-info"><h3>${r.name}</h3><p>${r.desc}</p><div class="restaurant-meta">${[r.city,r.price].filter(Boolean).join(" · ")||"Città da verificare"}</div></div><div class="restaurant-links"><button type="button" class="favorite-button ${isFav?"is-favorite":""}" data-favorite="${r.name.replace(/"/g,"&quot;")}" aria-label="${isFav?"Rimuovi dai preferiti":"Aggiungi ai preferiti"}" title="${isFav?"Rimuovi dai preferiti":"Aggiungi ai preferiti"}">${isFav?"★":"☆"}</button><a href="${tabelog}" target="_blank" rel="noopener">Tabelog ↗</a><a href="${maps}" target="_blank" rel="noopener">Maps ↗</a></div></article>`;
  }).join("")||'<p class="muted">Nessun locale trovato.</p>';
 }
 restaurantSearch.addEventListener("input",renderRestaurants);
 restaurantCity.addEventListener("change",renderRestaurants);
+restaurantFavoritesFilter?.addEventListener("change",renderRestaurants);
+restaurantList.addEventListener("click",e=>{const b=e.target.closest("[data-favorite]");if(b)toggleRestaurantFavorite(b.dataset.favorite)});
 renderRestaurants();

@@ -32,3 +32,14 @@ Versione 6: aggiornate le tratte ferroviarie secondo gli orari comunicati dall�
 \n## Versione 7 — dati locali e backup\n- Le tappe possono essere segnate come visitate e annotate per singolo dispositivo.\n- I dati personali vengono conservati in locale nel browser e restano disponibili offline dopo il primo caricamento.\n- Nella sezione Info utili sono disponibili esportazione e importazione di un file JSON per trasferire i dati tra telefoni.\n- Non c'è sincronizzazione automatica: il programma comune viene aggiornato tramite GitHub Pages; note e visite sono separate finché non si importa/esporta un backup.\n
 
 Versione 8: aggiunta scheda Programma giornaliero, scheda Città separata e marcatura rossa degli spostamenti/prenotazioni da completare.
+
+
+Versione 17: checklist locale per prenotazioni/preparativi, preferiti ristoranti salvati sul dispositivo, filtro solo preferiti e link rapido al percorso giornaliero. Backup include checklist e preferiti.
+
+
+## Versione 17 – organizzazione completa
+- Checklist locale per prenotazioni e preparativi, con avanzamento salvato sul dispositivo.
+- Preferiti dei ristoranti con filtro dedicato.
+- Backup JSON include checklist e preferiti, oltre a note e visite completate.
+- Link rapido al percorso del giorno nella scheda Città.
+- Dati personali conservati localmente; non è prevista sincronizzazione automatica tra telefoni.

@@ -29,7 +29,7 @@ const cities=[
 const labels={all:"Tutto",place:"Luoghi",shop:"Negozi",food:"Ristoranti",hotel:"Alloggi"};
 const icons={place:"⛩️",shop:"💈",food:"🍣",hotel:"🏨"};
 const LOCAL_KEY="japan2026-local-data-v1";
-function readLocalData(){try{return JSON.parse(localStorage.getItem(LOCAL_KEY)||'{"visited":{},"notes":{}}')}catch(e){return {visited:{},notes:{}}}}
+function readLocalData(){try{const d=JSON.parse(localStorage.getItem(LOCAL_KEY)||'{"visited":{},"notes":{},"checklist":{},"favorites":[]}');return {...{visited:{},notes:{},checklist:{},favorites:[]},...d}}catch(e){return {visited:{},notes:{},checklist:{},favorites:[]}}}
 function writeLocalData(data){try{localStorage.setItem(LOCAL_KEY,JSON.stringify(data))}catch(e){}}
 function activityKey(city,day,item){return [city,day,item].join("::")}
 const list=document.getElementById("city-list"),detail=document.getElementById("city-detail");let selected="tokyo",selectedDay=0,filter="all",cityMenuOpen=true;
@@ -40,7 +40,7 @@ function renderDetail(){const c=cities.find(x=>x.id===selected);if(!c)return;con
 const cityQuery=encodeURIComponent(c.map||c.name+', Japan');
 const dayLocations=day.items.map(x=>x.map).filter(Boolean);
 const routeUrl=dayLocations.length>1?`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(dayLocations[0])}&destination=${encodeURIComponent(dayLocations[dayLocations.length-1])}${dayLocations.length>2?'&waypoints='+encodeURIComponent(dayLocations.slice(1,-1).join('|')):''}&travelmode=walking`: `https://www.google.com/maps/search/?api=1&query=${cityQuery}`;
-detail.innerHTML=`<div class="detail-top"><span class="eyebrow">${c.jp} · ${c.date}</span><h3>${c.emoji} ${c.name}</h3><p>${c.intro}</p><a class="action" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${cityQuery}">Apri mappa della città ↗</a></div>
+detail.innerHTML=`<div class="detail-top"><span class="eyebrow">${c.jp} · ${c.date}</span><h3>${c.emoji} ${c.name}</h3><p>${c.intro}</p><div class="city-map-actions"><a class="action" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${cityQuery}">Apri mappa della città ↗</a><a class="action" target="_blank" rel="noopener" href="${routeUrl}">Percorso del giorno ↗</a></div></div>
 <div class="map-panel"><div class="map-heading"><div><span class="eyebrow">MAPPA INTERATTIVA</span><h4>${c.name} e dintorni</h4></div><a class="action" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${cityQuery}">Apri Google Maps ↗</a></div><iframe title="Mappa Google Maps di ${c.name}" src="https://maps.google.com/maps?q=${cityQuery}&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe><p class="small">La mappa incorporata mostra la zona della località. Usa i link dei singoli luoghi per vedere i punti esatti.</p></div>
 <div class="day-heading"><span class="eyebrow">ITINERARIO SUGGERITO</span><h4>Organizza la giornata</h4></div>
 <div class="day-tabs">${days.map((d,i)=>`<button class="day-tab ${i===selectedDay?"selected":""}" data-day="${i}">${d.title}</button>`).join("")}</div>
@@ -85,6 +85,20 @@ function renderProgram(){
 }
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===b.dataset.view));window.scrollTo({top:0,behavior:"smooth"})});
 renderCities();renderProgram();
+const checklistItems=[
+ {id:"shibuya-sky",text:"Controllare conferma Shibuya Sky · 26 ottobre, 15:40–15:59"},
+ {id:"nikko-return",text:"Prenotare il rientro Tobu-Nikkō → Tokyo · 29 ottobre"},
+ {id:"tokyo-kanazawa",text:"Prenotare Tokyo → Kanazawa · 30 ottobre"},
+ {id:"kyoto-hiroshima",text:"Prenotare Kyoto → Hiroshima · 4 novembre"},
+ {id:"miyajima-ferry",text:"Verificare treno e traghetto per Miyajima · 5 novembre"},
+ {id:"hiroshima-osaka",text:"Prenotare Hiroshima → Osaka · 6 novembre"},
+ {id:"manryo",text:"Tenere a portata la conferma cooking class Manryo · 2 novembre, 10:00"},
+ {id:"peace-museum",text:"Tenere a portata i biglietti del Peace Memorial Museum · 5 novembre, 11:15"},
+ {id:"offline-maps",text:"Scaricare le mappe offline delle zone del viaggio in Google Maps"},
+ {id:"backup",text:"Esportare un backup dei dati personali prima della partenza"}
+];
+function renderChecklist(){const host=document.getElementById("travel-checklist");if(!host)return;const data=readLocalData();host.innerHTML=checklistItems.map(item=>`<label class="checklist-item"><input type="checkbox" data-checklist="${item.id}" ${data.checklist[item.id]?'checked':''}><span>${item.text}</span></label>`).join("");host.querySelectorAll("[data-checklist]").forEach(el=>el.addEventListener("change",()=>{const d=readLocalData();d.checklist[el.dataset.checklist]=el.checked;writeLocalData(d);renderChecklist()}));const done=checklistItems.filter(x=>data.checklist[x.id]).length;const progress=document.getElementById("checklist-progress");if(progress)progress.textContent=`${done} di ${checklistItems.length} completate`;}
+renderChecklist();
 function downloadLocalBackup(){
  const payload={app:"Japan 2026",version:1,exportedAt:new Date().toISOString(),data:readLocalData()};
  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
@@ -96,7 +110,7 @@ document.getElementById("import-data")?.addEventListener("change",async e=>{
  const file=e.target.files&&e.target.files[0];if(!file)return;
  const status=document.getElementById("backup-status");
  try{const payload=JSON.parse(await file.text());const d=payload.data||payload;if(!d||typeof d!=="object"||!d.visited||!d.notes)throw new Error("Formato non valido");
- const current=readLocalData();const merged={visited:{...current.visited,...d.visited},notes:{...current.notes,...d.notes}};writeLocalData(merged);if(status)status.textContent="Backup importato. Le note e le visite sono state unite ai dati presenti.";renderDetail();
+ const current=readLocalData();const merged={visited:{...current.visited,...d.visited},notes:{...current.notes,...d.notes},checklist:{...(current.checklist||{}),...(d.checklist||{})},favorites:[...new Set([...(current.favorites||[]),...(d.favorites||[])])]};writeLocalData(merged);renderChecklist();if(status)status.textContent="Backup importato. Le note e le visite sono state unite ai dati presenti.";renderDetail();
  }catch(err){if(status)status.textContent="Impossibile importare: seleziona un backup Japan 2026 valido."}
  e.target.value="";
 });
