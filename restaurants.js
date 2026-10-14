@@ -14,11 +14,22 @@ function renderRestaurants(){
   const tabelog="https://tabelog.com/rst/rstsearch/?sk="+encodeURIComponent(r.name);
   const maps="https://www.google.com/maps/search/?api=1&query="+query;
   const isFav=favorites.has(r.name);
-  return `<article class="restaurant-row"><div class="restaurant-info"><h3>${r.name}</h3><p>${r.desc}</p><div class="restaurant-meta">${[r.city,r.price].filter(Boolean).join(" · ")||"Città da verificare"}</div></div><div class="restaurant-links"><button type="button" class="favorite-button ${isFav?"is-favorite":""}" data-favorite="${r.name.replace(/"/g,"&quot;")}" aria-label="${isFav?"Rimuovi dai preferiti":"Aggiungi ai preferiti"}" title="${isFav?"Rimuovi dai preferiti":"Aggiungi ai preferiti"}">${isFav?"★":"☆"}</button><a href="${tabelog}" target="_blank" rel="noopener">Tabelog ↗</a><a href="${maps}" target="_blank" rel="noopener">Maps ↗</a></div></article>`;
+  return `<article class="restaurant-row"><div class="restaurant-info"><h3><button type="button" class="restaurant-name-button" data-open-restaurant="${r.name.replace(/"/g,"&quot;")}">${r.name}</button></h3><p>${r.desc}</p><div class="restaurant-meta">${[r.city,r.price].filter(Boolean).join(" · ")||"Città da verificare"}</div></div><div class="restaurant-links"><button type="button" class="favorite-button ${isFav?"is-favorite":""}" data-favorite="${r.name.replace(/"/g,"&quot;")}" aria-label="${isFav?"Rimuovi dai preferiti":"Aggiungi ai preferiti"}" title="${isFav?"Rimuovi dai preferiti":"Aggiungi ai preferiti"}">${isFav?"★":"☆"}</button><a href="${tabelog}" target="_blank" rel="noopener">Tabelog ↗</a><a href="${maps}" target="_blank" rel="noopener">Maps ↗</a></div></article>`;
  }).join("")||'<p class="muted">Nessun locale trovato.</p>';
 }
 restaurantSearch.addEventListener("input",renderRestaurants);
 restaurantCity.addEventListener("change",renderRestaurants);
 restaurantFavoritesFilter?.addEventListener("change",renderRestaurants);
-restaurantList.addEventListener("click",e=>{const b=e.target.closest("[data-favorite]");if(b)toggleRestaurantFavorite(b.dataset.favorite)});
+restaurantList.addEventListener("click",e=>{
+ const fav=e.target.closest("[data-favorite]");if(fav){toggleRestaurantFavorite(fav.dataset.favorite);return;}
+ const open=e.target.closest("[data-open-restaurant]");if(open){const r=restaurants.find(x=>x.name===open.dataset.openRestaurant);if(r)renderRestaurantDetail(r);}
+});
+function renderRestaurantDetail(r){
+ const query=encodeURIComponent(r.name+(r.city?" "+r.city+" Japan":" Japan"));
+ const maps="https://www.google.com/maps/search/?api=1&query="+query;
+ const directions="https://www.google.com/maps/dir/?api=1&destination="+query;
+ const tabelog="https://tabelog.com/rst/rstsearch/?sk="+encodeURIComponent(r.name);
+ restaurantList.innerHTML=`<article class="restaurant-detail-page"><button type="button" class="back-to-restaurants" id="back-to-restaurants">‹ Indietro ai ristoranti</button><span class="eyebrow">🍣 RISTORANTE${r.city?" · "+r.city.toUpperCase():""}</span><h3>${r.name}</h3><p class="place-description">${r.desc||""}</p><div class="restaurant-detail-meta">${[r.city,r.price].filter(Boolean).join(" · ")||"Città da verificare"}</div><div class="map-panel place-map-panel"><div class="map-heading"><div><span class="eyebrow">MAPPA DEL LOCALE</span><h4>${r.name}</h4></div></div><iframe title="Mappa di ${r.name}" src="https://maps.google.com/maps?q=${query}&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div><div class="place-info-card"><span class="eyebrow">INDIRIZZO E RECENSIONI</span><p>Apri la scheda Google Maps per consultare indirizzo, orari, valutazione e recensioni aggiornate.</p><a class="action" target="_blank" rel="noopener" href="${maps}">📍 Apri scheda Google Maps ↗</a></div><a class="directions-button" target="_blank" rel="noopener" href="${directions}">Ottieni indicazioni su Google Maps ↗</a><a class="action restaurant-tabelog-link" target="_blank" rel="noopener" href="${tabelog}">Apri ricerca su Tabelog ↗</a></article>`;
+ document.getElementById("back-to-restaurants").onclick=renderRestaurants;
+}
 renderRestaurants();
