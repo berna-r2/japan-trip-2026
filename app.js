@@ -16,7 +16,7 @@ const cities=[
  {"type":"shop","name":"Kiminoen Tea Garden","desc":"Negozio di tè salvato nella collection.","map":"Kiminoen Tea Garden, Tokyo","route":false},
  {"type":"shop","name":"KAMATA Hakensha - Japanese knife store","desc":"Negozio di coltelli giapponesi; abbinalo a Kappabashi.","map":"KAMATA Hakensha, Kappabashi, Tokyo","route":false},
  {"type":"shop","name":"Fujigoromo","desc":"Bottega di abbigliamento e articoli tradizionali ad Asakusa.","map":"Fujigoromo, Asakusa, Tokyo","route":false},
- {"type":"hotel","name":"ASAKUSA KOKONO CLUB HOTEL","desc":"Struttura salvata nella collection Negozi.","map":"ASAKUSA KOKONO CLUB HOTEL, Tokyo","route":false},
+ {"type":"place","name":"ASAKUSA KOKONO CLUB HOTEL","desc":"Spazio con kimono in esposizione, salvato per la visita; non è un alloggio.","map":"ASAKUSA KOKONO CLUB HOTEL, Tokyo","route":false},
  {"type":"shop","name":"Japan Blue Jeans UENO","desc":"Negozio di denim nella zona di Ueno.","map":"Japan Blue Jeans Ueno, Tokyo","route":false},
  {"type":"shop","name":"JAPAN BLUE JEANS Asakusa","desc":"Negozio di denim ad Asakusa.","map":"Japan Blue Jeans Asakusa, Tokyo","route":false},
  {"type":"shop","name":"SASUGAYA OUTLET","desc":"Outlet di articoli di marca nell'area Ameyoko.","map":"SASUGAYA OUTLET Ueno, Tokyo","route":false},
