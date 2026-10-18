@@ -1,10 +1,11 @@
 const cities=[
 {id:"tokyo",name:"Tokyo",jp:"東京",date:"24–27 e 29–30 ottobre",emoji:"🏙️",intro:"Quartieri moderni, templi, negozi specializzati e cucina giapponese.",map:"Tokyo, Japan",days:[
-{title:"Giorno 1 · Asakusa, Skytree e Ueno",area:"Tempio · parco · skyline facoltativo",items:[
- {"type":"place","name":"Sensō-ji e Nakamise-dōri","desc":"Tempio storico e strada di bancarelle tradizionali. Meglio arrivare al mattino.","map":"Senso-ji, Tokyo","route":true},
+{title:"25 ottobre · Ueno e Asakusa",area:"Ueno al mattino · Sensō-ji e Nakamise nel pomeriggio",items:[
+ {"type":"shop","name":"Mizutani Camera","desc":"Negozio di fotocamere e orologi nell’area Ueno/Ameyoko · 10:00–17:00, chiuso il giovedì; controlla eventuali variazioni.","map":"Mizutani Camera, Ueno, Tokyo","route":true},
  {"type":"place","name":"Parco di Ueno","desc":"Grande parco cittadino, musei e passeggiate; scegli le tappe in base agli interessi.","map":"Ueno Park, Tokyo","route":true},
  {"type":"place","name":"Santuario Toshogu di Ueno","desc":"Santuario storico nel parco di Ueno.","map":"Ueno Toshogu Shrine, Tokyo","route":true},
  {"type":"place","name":"Laghetto Shinobazu-no-ike","desc":"Lago nel parco di Ueno, adatto a una passeggiata.","map":"Shinobazu Pond, Tokyo","route":true},
+ {"type":"place","name":"Sensō-ji e Nakamise-dōri","desc":"Tempio storico e strada di bancarelle tradizionali. Meglio arrivare al mattino.","map":"Senso-ji, Tokyo","route":true},
  {"type":"place","name":"Tokyo Skytree","desc":"Torre panoramica e complesso commerciale a Sumida; abbinabile ad Asakusa se resta tempo.","map":"Tokyo Skytree, Tokyo","route":false},
  {"type":"place","name":"Centro Informazioni Turistiche Culturali","desc":"Belvedere e informazioni per orientarsi ad Asakusa.","map":"Asakusa Culture and Tourism Center, Tokyo","route":false},
  {"type":"shop","name":"Via Kappabashi Dougu","desc":"Negozi di coltelli da cucina, ceramiche e utensili: interessante per oggetti artigianali.","map":"Kappabashi Dougu Street, Tokyo","route":false},
@@ -20,17 +21,35 @@ const cities=[
  {"type":"shop","name":"Japan Blue Jeans UENO","desc":"Negozio di denim nella zona di Ueno.","map":"Japan Blue Jeans Ueno, Tokyo","route":false},
  {"type":"shop","name":"JAPAN BLUE JEANS Asakusa","desc":"Negozio di denim ad Asakusa.","map":"Japan Blue Jeans Asakusa, Tokyo","route":false},
  {"type":"shop","name":"SASUGAYA OUTLET","desc":"Outlet di articoli di marca nell'area Ameyoko.","map":"SASUGAYA OUTLET Ueno, Tokyo","route":false},
- {"type":"shop","name":"Mizutani Camera","desc":"Negozio di fotocamere a Ueno.","map":"Mizutani Camera, Ueno, Tokyo","route":false},
  {"type":"shop","name":"TiCTAC 東京ソラマチ店","desc":"Negozio di orologi nel complesso Tokyo Solamachi, presso Skytree.","map":"TiCTAC Tokyo Solamachi, Tokyo","route":false}
 ]},
-{title:"Giorno 2 · Meiji, Harajuku e Shibuya",area:"Santuario · passeggiata · Shibuya Sky prenotata",items:[
+{title:"26 ottobre · Tsukiji, Ginza e cena prenotata",area:"Mercato al mattino · Ginza · cena alle 20:00",items:[
+ {"type":"place","name":"Tsukiji Outer Market","desc":"Mercato e bancarelle per una visita mattutina; priorità al mercato, senza la tappa Toyosu.","map":"Tsukiji Outer Market, Tokyo","route":true},
+ {"type":"place","name":"Tokyo Station e Marunouchi","desc":"Architettura della stazione, gallerie commerciali e passeggiata serale; area alternativa se resta tempo.","map":"Tokyo Station, Tokyo","route":false},
+ {"type":"place","name":"Tokyo International Forum","desc":"Centro espositivo e sala concerti vicino a Tokyo Station.","map":"Tokyo International Forum, Tokyo","route":false},
+ {"type":"place","name":"Ginza","desc":"Grandi magazzini, design e negozi di fascia alta.","map":"Ginza, Tokyo","route":true},
+ {"type":"place","name":"Kabuki-za","desc":"Teatro kabuki nel quartiere di Ginza.","map":"Kabuki-za, Tokyo","route":false},
+ {"type":"place","name":"teamLab Planets · facoltativo","desc":"Sceglierlo solo se il gruppo lo preferisce a Borderless; si trova a Toyosu e richiede spostamento e biglietto.","map":"teamLab Planets TOKYO, Toyosu","route":false},
+ {"type":"place","name":"teamLab Borderless · facoltativo","desc":"Alternativa a Planets ad Azabudai Hills; decidere col gruppo e verificare disponibilità del biglietto.","map":"teamLab Borderless Azabudai Hills, Tokyo","route":false},
+ {"type":"food","name":"Nogizaka Shin","desc":"Cena prenotata alle 20:00 il 26 ottobre.","map":"Nogizaka Shin, Tokyo","route":false},
+ {"type":"food","name":"Tokyo Ramen Street","desc":"Area di ristoranti ramen all'interno del complesso della stazione; verifica orari e code.","map":"Tokyo Ramen Street, Tokyo","route":false},
+ {"type":"food","name":"Depachika","desc":"Piani alimentari dei grandi magazzini: ottimi per assaggiare specialità e acquistare snack.","map":"Nihombashi Mitsukoshi, Tokyo","route":false},
+ {"type":"hotel","name":"MyCUBE by MySTAYS Asakusa Kuramae","desc":"Alloggio · 29–30 ottobre","map":"MyCUBE by MySTAYS Asakusa Kuramae, Tokyo, Japan","url":"https://share.google/a2aVXyzMxUjx3rYxQ","route":false},
+ {"type":"shop","name":"Matsuya Ginza","desc":"Grande magazzino nel quartiere di Ginza.","map":"Matsuya Ginza, Tokyo","route":false},
+ {"type":"shop","name":"Ginza Itoya","desc":"Storica cartoleria e negozio di articoli creativi.","map":"Ginza Itoya, Tokyo","route":false},
+ {"type":"shop","name":"Kyukyodo","desc":"Negozio tradizionale di carta, incenso e calligrafia a Ginza.","map":"Kyukyodo Ginza, Tokyo","route":false},
+ {"type":"shop","name":"Shellman Watch & Jewelry","desc":"Negozio di orologi e gioielli a Ginza.","map":"Shellman Watch and Jewelry Ginza, Tokyo","route":false},
+ {"type":"shop","name":"Ginza Natsuno Chopstick Craft Experience","desc":"Bacchette artigianali e attività a Ginza.","map":"Ginza Natsuno, Tokyo","route":false},
+ {"type":"shop","name":"Motohashi Clock Shop","desc":"Negozio di orologi salvato nella collection.","map":"Motohashi Clock Shop, Tokyo, Japan","route":false}
+]},{title:"27 ottobre · Meiji, Harajuku e Shibuya",area:"Santuario · Harajuku · Shibuya Sky alle 15:40",items:[
  {"type":"place","name":"Meiji Jingū","desc":"Santuario immerso nel verde; visita tranquilla al mattino.","map":"Meiji Jingu, Tokyo","route":true},
+ {"type":"place","name":"Gotokuji","desc":"Tempio del maneki-neko; deviazione facoltativa, richiede partenza molto anticipata prima di Harajuku e Shibuya.","map":"Gotokuji Temple, Tokyo","route":false},
  {"type":"place","name":"Yoyogi-kōen","desc":"Grande parco accanto al santuario Meiji.","map":"Yoyogi Park, Tokyo","route":true},
  {"type":"place","name":"Takeshita Street","desc":"Via commerciale di Harajuku con negozi giovani e snack.","map":"Takeshita Street, Tokyo","route":true},
  {"type":"place","name":"Cat St","desc":"Passeggiata tra Harajuku e Shibuya con negozi e caffè.","map":"Cat Street, Tokyo","route":true},
  {"type":"place","name":"Shibuya Crossing","desc":"Incrocio pedonale iconico di Shibuya.","map":"Shibuya Scramble Crossing, Tokyo","route":true},
  {"type":"place","name":"Statua di Hachikō","desc":"Statua del cane Hachikō accanto all’uscita Hachikō della stazione di Shibuya.","map":"Hachikō Memorial Statue, Tokyo","route":true},
- {"type":"place","name":"Shibuya Sky","desc":"Osservatorio con ingresso prenotato il 26 ottobre alle 15:40–15:59.","map":"Shibuya Sky, Tokyo","route":true},
+ {"type":"place","name":"Shibuya Sky","desc":"Osservatorio con ingresso prenotato il 27 ottobre alle 15:40–15:59.","map":"Shibuya Sky, Tokyo","route":true},
  {"type":"place","name":"Nonbei Yokocho","desc":"Vicolo con piccoli bar e locali; controlla orari e regole d'accesso.","map":"Nonbei Yokocho, Tokyo","route":false},
  {"type":"place","name":"Tokyu Plaza Omotesando “OMOKADO”","desc":"Complesso commerciale e terrazza in zona Omotesando.","map":"Tokyu Plaza Omotesando Omokado, Tokyo","route":false},
  {"type":"shop","name":"RAGTAG","desc":"Negozio di moda second hand; sede salvata in Maps.","map":"RAGTAG, Tokyo, Japan","route":false},
@@ -54,21 +73,7 @@ const cities=[
  {"type":"shop","name":"Mod Tokyo","desc":"Workshop per modifiche di Game Boy ad Akihabara; verifica disponibilità.","map":"Mod Tokyo Akihabara, Tokyo","route":false},
  {"type":"shop","name":"Akihabara Radio Center","desc":"Galleria di negozi di elettronica e componenti.","map":"Akihabara Radio Center, Tokyo","route":false}
 ]},
-{title:"Tokyo centrale · Marunouchi e Ginza",area:"Solo il 30 ottobre se il treno parte tardi",items:[
- {"type":"place","name":"Tokyo Station e Marunouchi","desc":"Architettura della stazione, gallerie commerciali e passeggiata serale.","map":"Tokyo Station, Tokyo","route":true},
- {"type":"place","name":"Tokyo International Forum","desc":"Centro espositivo e sala concerti vicino a Tokyo Station.","map":"Tokyo International Forum, Tokyo","route":true},
- {"type":"place","name":"Ginza","desc":"Grandi magazzini, design e negozi di fascia alta.","map":"Ginza, Tokyo","route":true},
- {"type":"place","name":"Kabuki-za","desc":"Teatro kabuki nel quartiere di Ginza.","map":"Kabuki-za, Tokyo","route":true},
- {"type":"food","name":"Tokyo Ramen Street","desc":"Area di ristoranti ramen all'interno del complesso della stazione; verifica orari e code.","map":"Tokyo Ramen Street, Tokyo","route":false},
- {"type":"food","name":"Depachika","desc":"Piani alimentari dei grandi magazzini: ottimi per assaggiare specialità e acquistare snack.","map":"Nihombashi Mitsukoshi, Tokyo","route":false},
- {"type":"hotel","name":"MyCUBE by MySTAYS Asakusa Kuramae","desc":"Alloggio · 29–30 ottobre","map":"MyCUBE by MySTAYS Asakusa Kuramae, Tokyo, Japan","url":"https://share.google/a2aVXyzMxUjx3rYxQ","route":false},
- {"type":"shop","name":"Matsuya Ginza","desc":"Grande magazzino nel quartiere di Ginza.","map":"Matsuya Ginza, Tokyo","route":false},
- {"type":"shop","name":"Ginza Itoya","desc":"Storica cartoleria e negozio di articoli creativi.","map":"Ginza Itoya, Tokyo","route":false},
- {"type":"shop","name":"Kyukyodo","desc":"Negozio tradizionale di carta, incenso e calligrafia a Ginza.","map":"Kyukyodo Ginza, Tokyo","route":false},
- {"type":"shop","name":"Shellman Watch & Jewelry","desc":"Negozio di orologi e gioielli a Ginza.","map":"Shellman Watch and Jewelry Ginza, Tokyo","route":false},
- {"type":"shop","name":"Ginza Natsuno Chopstick Craft Experience","desc":"Bacchette artigianali e attività a Ginza.","map":"Ginza Natsuno, Tokyo","route":false},
- {"type":"shop","name":"Motohashi Clock Shop","desc":"Negozio di orologi salvato nella collection.","map":"Motohashi Clock Shop, Tokyo, Japan","route":false}
-]},{title:"Giorno 3 · Shinjuku: Gyoen e skyline",area:"Gyoen al mattino · vicoli facoltativi la sera",items:[
+{"title":"30 ottobre · Shinjuku al mattino (solo con treno pomeridiano)","area":"Gyoen · Hanazono · osservatorio · trasferimento a Kanazawa","items":[
  {"type":"place","name":"Shinjuku Gyoen","desc":"Uno dei grandi giardini di Tokyo, con aree paesaggistiche di stili diversi.","map":"Shinjuku Gyoen National Garden, Tokyo","route":true},
  {"type":"place","name":"Santuario Hanazono","desc":"Santuario nel cuore di Shinjuku.","map":"Hanazono Shrine, Shinjuku, Tokyo","route":true},
  {"type":"place","name":"Tokyo Metropolitan Government Building","desc":"Osservatori panoramici sullo skyline di Tokyo; controlla giorni e orari di apertura.","map":"Tokyo Metropolitan Government Building, Shinjuku, Tokyo","route":true},
@@ -141,25 +146,25 @@ function renderProgram(){
      "date": "25 ottobre",
      "city": "Tokyo",
      "id": "tokyo",
-     "title": "Asakusa e Ueno",
+     "title": "Ueno e Asakusa",
      "day": 0,
-     "extra": "Priorità: Sensō-ji, poi Tokyo Skytree se vuoi salire e Ueno (parco, Toshogu, Shinobazu). Kappabashi e Ameyoko sono deviazioni facoltative."
+     "extra": "A Ueno in mattinata: Mizutani Camera (10:00–17:00, chiuso il giovedì), poi parco, Toshogu e Shinobazu. Prosegui verso Asakusa entro le 15:00–15:30 per Sensō-ji e Nakamise (il tempio chiude alle 17:00 in ottobre). Skytree, Kappabashi e Ameyoko solo se resta tempo."
    },
    {
      "date": "26 ottobre",
      "city": "Tokyo",
      "id": "tokyo",
-     "title": "Harajuku e Shibuya",
+     "title": "Tsukiji, Ginza e cena a Nogizaka",
      "day": 1,
-     "extra": "Meiji Jingū al mattino, Yoyogi e Harajuku a piedi verso Shibuya. Tieni margine per la prenotazione Shibuya Sky alle 15:40–15:59; negozi e locali sono facoltativi."
+     "extra": "Tsukiji al mattino e Ginza in seguito. teamLab è facoltativo e da decidere col gruppo: se scelto, inserite una sola sede (Planets a Toyosu oppure Borderless ad Azabudai) e verificate il biglietto. Cena prenotata da Nogizaka Shin alle 20:00."
    },
    {
      "date": "27 ottobre",
      "city": "Tokyo",
      "id": "tokyo",
-     "title": "Shinjuku · giardino, santuario e skyline",
-     "day": 4,
-     "extra": "Shinjuku Gyoen alle 9:00 (ultimo ingresso 16:00, chiusura 16:30); poi Hanazono e osservatorio del Metropolitan Government Building. Omoide Yokocho e Golden Gai sono facoltativi la sera. Il 28 il treno da Shinjuku parte alle 10:31 e arriva a Kinugawa alle 12:36: prepara i bagagli."
+     "title": "Gotokuji (facoltativo), Meiji, Harajuku e Shibuya",
+     "day": 2,
+     "extra": "Giornata densa: Gotokuji solo con partenza molto presto, altrimenti saltalo. Poi Meiji Jingū, Harajuku/Omotesando e Shibuya; ingresso prenotato a Shibuya Sky il 27 alle 15:40–15:59. Omoide Yokocho e Golden Gai sono solo un’opzione serale se restano energie. Il 28 il treno da Shinjuku parte alle 10:31 e arriva a Kinugawa alle 12:36: prepara i bagagli."
    },
    {
      "date": "28 ottobre",
@@ -186,12 +191,12 @@ function renderProgram(){
      "extra": "Solo se il rientro da Nikkō lascia tempo ed energie; altrimenti salta questa tappa."
    },
    {
-     "date": "30 ottobre · solo se il treno è tardi",
+     "date": "30 ottobre · solo con Shinkansen nel pomeriggio",
      "city": "Tokyo · facoltativo",
      "id": "tokyo",
-     "title": "Tokyo Station, Marunouchi e Ginza",
-     "day": 3,
-     "extra": "Mattina libera solo dopo aver confermato l'orario dello Shinkansen per Kanazawa; lascia margine per raggiungere la stazione."
+     "title": "Shinjuku Gyoen, Hanazono e osservatorio",
+     "day": 4,
+     "extra": "Possibile solo se il treno per Kanazawa parte dopo pranzo: Gyoen all’apertura, poi Hanazono e Metropolitan Government Building. Se il treno è al mattino o a inizio pomeriggio, salta questa visita e vai direttamente in stazione."
    },
    {
      "date": "30 ottobre",
@@ -276,7 +281,7 @@ function renderProgram(){
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===b.dataset.view));window.scrollTo({top:0,behavior:"smooth"})});
 renderCities();renderProgram();
 const checklistItems=[
- {id:"shibuya-sky",text:"Controllare conferma Shibuya Sky · 26 ottobre, 15:40–15:59"},
+ {id:"shibuya-sky",text:"Controllare conferma Shibuya Sky · 27 ottobre, 15:40–15:59"},
  {id:"nikko-return",text:"Prenotare il rientro Tobu-Nikkō → Tokyo · 29 ottobre"},
  {id:"tokyo-kanazawa",text:"Prenotare Tokyo → Kanazawa · 30 ottobre"},
  {id:"kyoto-hiroshima",text:"Prenotare Kyoto → Hiroshima · 4 novembre"},
