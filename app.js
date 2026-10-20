@@ -280,6 +280,156 @@ function renderProgram(){
 }
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id===b.dataset.view));window.scrollTo({top:0,behavior:"smooth"})});
 renderCities();renderProgram();
+
+function initSavedPlaceSearch(){
+ const form=document.getElementById("saved-place-search-form");
+ if(!form)return;
+ const input=document.getElementById("saved-place-search-input");
+ const output=document.getElementById("saved-place-search-results");
+ const status=document.getElementById("saved-place-search-status");
+ const nearbyButton=document.getElementById("saved-place-nearby-button");
+ let currentPosition=null;
+ const stopWords=new Set(["cerco","cerca","cercare","cercami","trovami","trova","mostra","mostrami","vorrei","voglio","dove","quale","quali","cosa","posto","posti","vicino","vicina","vicini","vicine","dintorni","near","nearby","nearest","me","piu","a","ad","al","allo","alla","ai","agli","alle","da","dal","dalla","di","del","dello","della","dei","degli","delle","in","nel","nello","nella","nei","nelle","con","per","un","uno","una","il","lo","la","i","gli","le","the","to","for","my","show","find","looking","please","negozio","negozi","shop","shops","store","stores","boutique"]);
+ const synonymGroups=[
+  ["coltello","coltelli","coltelleria","knife","knives","cutlery","kitchen knife","japanese knife"],
+  ["libreria","librerie","bookstore","bookshop","books"],
+  ["cartoleria","cartolerie","stationery","stationer","art supplies","cartoleria"],
+  ["tempio","templi","temple","temples","shrine","shrines","santuario","santuari"],
+  ["ristorante","ristoranti","restaurant","restaurants","cibo","food","dove mangiare"],
+  ["giardino","giardini","garden","gardens","parco","parchi","park"],
+  ["fotocamera","fotocamere","camera","cameras"],
+  ["cosmetici","cosmetico","cosmetics","beauty"],
+  ["bar","cocktail","cocktail bar","izakaya"]
+ ];
+ const normalize=value=>String(value||"").toLocaleLowerCase("it").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
+ const escapeHtml=value=>String(value||"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+ const hasNearbyRequest=query=>/\b(vicino|vicina|vicini|vicine|dintorni|nearby)\b|\bnear me\b|\bpiu vicino\b/.test(normalize(query));
+ function requestedTypes(query){
+  const n=normalize(query);
+  if(/\b(negozio|negozi|shop|shops|store|stores|boutique)\b/.test(n))return ["shop"];
+  if(/\b(ristorante|ristoranti|restaurant|restaurants|cibo|food|bar|izakaya)\b/.test(n))return ["food"];
+  if(/\b(alloggio|hotel|hotels|hostel|capsule)\b/.test(n))return ["hotel"];
+  return null;
+ }
+ function termsFor(query){
+  const n=normalize(query);
+  const tokens=n.split(/\s+/).filter(t=>t&&!stopWords.has(t));
+  return tokens.map(token=>{
+   const group=synonymGroups.find(g=>g.some(word=>{const w=normalize(word);return w===token||(token.length>4&&w.startsWith(token))||(w.length>4&&token.startsWith(w));}));
+   return group||[token];
+  }).filter((group,i,all)=>all.findIndex(other=>other===group||other[0]===group[0])===i);
+ }
+ function getSavedItems(){
+  const all=[];
+  (cities||[]).forEach(city=>(city.days||[]).forEach(day=>(day.items||[]).forEach(item=>{
+   if(!item||!item.name)return;
+   all.push({...item,cityName:city.name,dayTitle:day.title,mapQuery:item.map||item.name+", "+city.name+", Japan"});
+  })));
+  if(typeof restaurants!=="undefined"&&Array.isArray(restaurants))restaurants.forEach(item=>{
+   if(!item||!item.name)return;
+   all.push({type:"food",name:item.name,desc:item.desc||"Ristorante salvato",cityName:item.city||"Località da verificare",dayTitle:"Ristoranti salvati",mapQuery:item.name+(item.city?", "+item.city:"")+", Japan"});
+  });
+  const seen=new Set();
+  return all.filter(item=>{const key=normalize(item.name)+"|"+normalize(item.cityName);if(seen.has(key))return false;seen.add(key);return true;});
+ }
+ function matchingPlaces(query){
+  const groups=termsFor(query),types=requestedTypes(query);
+  if(!groups.length&&!types)return {items:[],groups};
+  const scored=getSavedItems().map(item=>{
+   if(types&&!types.includes(item.type))return null;
+   const corpus=normalize([item.name,item.desc,item.map,item.cityName,item.dayTitle,item.type].join(" "));
+   let score=0;
+   for(const group of groups){
+    const matched=group.some(word=>{const term=normalize(word);return term&&(" "+corpus+" ").includes(" "+term+" ");});
+    if(!matched)return null;
+    score+=group.some(word=>normalize(item.name).includes(normalize(word)))?4:1;
+   }
+   return {...item,score};
+  }).filter(Boolean);
+  scored.sort((x,y)=>y.score-x.score||x.name.localeCompare(y.name,"it"));
+  return {items:scored,groups};
+ }
+ function categoryLabel(type){return ({shop:"Negozio",place:"Luogo",food:"Cibo",hotel:"Alloggio"})[type]||"Salvato";}
+ function distanceKm(a,b){
+  if(!Number.isFinite(a.lat)||!Number.isFinite(a.lng)||!Number.isFinite(b.lat)||!Number.isFinite(b.lng))return null;
+  const rad=n=>n*Math.PI/180,lat1=rad(a.lat),lat2=rad(b.lat),dlat=lat2-lat1,dlng=rad(b.lng-a.lng);
+  const h=Math.sin(dlat/2)**2+Math.cos(lat1)*Math.cos(lat2)*Math.sin(dlng/2)**2;
+  return 6371*2*Math.atan2(Math.sqrt(h),Math.sqrt(1-h));
+ }
+ function mapSearchTerm(query){
+  const n=normalize(query);
+  if(/\bcoltell\w*|\b(knife|knives|cutlery)\b/.test(n))return "Japanese kitchen knife shop";
+  if(/\bcartoler\w*|\b(stationery|art supplies)\b/.test(n))return "stationery shop";
+  if(/\blibrer\w*|\b(bookstore|bookshop|books)\b/.test(n))return "bookstore";
+  if(/\b(cosmetic\w*|beauty)\b/.test(n))return "cosmetics shop";
+  if(/\b(ristorant\w*|restaurant\w*|cibo|food|bar|izakaya)\b/.test(n))return "restaurant";
+  const words=n.split(/\s+/).filter(t=>t&&!stopWords.has(t));return words.join(" ")||"shops";
+ }
+ function googleNearbyUrl(query,position){
+  const term=mapSearchTerm(query);
+  const near=position?" near "+position.coords.latitude.toFixed(3)+","+position.coords.longitude.toFixed(3):"";
+  return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(term+near);
+ }
+ function renderResults(query,position){
+  const found=matchingPlaces(query);
+  if(!normalize(query)){status.textContent="Scrivi cosa cerchi, per esempio “negozio di coltelli vicino a me”.";output.innerHTML="";return;}
+  if(!found.groups.length&&!requestedTypes(query)){status.textContent="Specifica un tipo di luogo o un nome, per esempio “libreria” o “coltelli”.";output.innerHTML="";return;}
+  const items=found.items;
+  if(position)items.sort((a,b)=>{
+   const here={lat:position.coords.latitude,lng:position.coords.longitude};const da=distanceKm(here,a),db=distanceKm(here,b);
+   if(da!==null&&db!==null)return da-db;
+   if(da!==null)return -1;if(db!==null)return 1;
+   return b.score-a.score||a.name.localeCompare(b.name,"it");
+  });
+  const origin=position?position.coords.latitude.toFixed(4)+","+position.coords.longitude.toFixed(4):"";
+  let html="";
+  html+='<div class="saved-search-group"><h3>Nei luoghi salvati ('+items.length+')</h3>';
+  if(position&&!items.some(x=>Number.isFinite(x.lat)&&Number.isFinite(x.lng)))html+='<p class="small">La guida non contiene le coordinate dei luoghi salvati, quindi non può ordinarli per distanza. Li mostro prima; “Indicazioni da qui” apre il percorso e la distanza in Maps.</p>';
+  if(items.length){
+   html+='<div class="saved-search-list">';
+   items.slice(0,40).forEach(item=>{
+    const distance=position?distanceKm({lat:position.coords.latitude,lng:position.coords.longitude},item):null;
+    const queryValue=encodeURIComponent(item.mapQuery);
+    const mapsUrl="https://www.google.com/maps/search/?api=1&query="+queryValue;
+    const directionsUrl=position?"https://www.google.com/maps/dir/?api=1&origin="+encodeURIComponent(origin)+"&destination="+queryValue:"";
+    const distanceText=distance===null?"":' · '+distance.toFixed(1)+' km';
+    html+='<article class="saved-search-card"><div class="saved-search-card-head"><span class="saved-search-type">'+escapeHtml(categoryLabel(item.type))+'</span><span class="saved-search-place">'+escapeHtml(item.cityName||"")+'</span></div><h4>'+escapeHtml(item.name)+'</h4><p>'+escapeHtml(item.desc||"")+'</p><p class="small">'+escapeHtml(item.dayTitle||"Luogo salvato")+distanceText+'</p><div class="saved-search-links"><a target="_blank" rel="noopener" href="'+mapsUrl+'">Apri su Maps ↗</a>'+(position?'<a target="_blank" rel="noopener" href="'+directionsUrl+'">Indicazioni da qui ↗</a>':"")+'</div></article>';
+   });
+   html+="</div>";
+  }else{
+   html+='<p class="small">Non trovo corrispondenze salvate con queste parole.</p>';
+  }
+  html+="</div>";
+  if(hasNearbyRequest(query)||position){
+   const nearbyUrl=googleNearbyUrl(query,position);
+   html+='<div class="external-search-card"><h3>Altri risultati vicino a te</h3><p class="small">Google Maps mostra le attività disponibili nell’area. I risultati possono includere luoghi non salvati nella guida.</p><a class="action-button" target="_blank" rel="noopener" href="'+nearbyUrl+'">Cerca altri risultati su Google Maps ↗</a></div>';
+  }
+  output.innerHTML=html;
+ }
+ function search(query,requestLocation){
+  const q=String(query||"").trim();
+  if(!q){status.textContent="Scrivi cosa cerchi, per esempio “negozio di coltelli vicino a me”.";output.innerHTML="";return;}
+  const wantLocation=requestLocation||hasNearbyRequest(q);
+  if(!wantLocation){currentPosition=null;status.textContent="Cerco prima nei luoghi salvati.";renderResults(q,null);return;}
+  if(!navigator.geolocation){currentPosition=null;status.textContent="La posizione non è disponibile in questo browser. Mostro i risultati salvati.";renderResults(q,null);return;}
+  status.textContent="Richiesta della posizione…";
+  nearbyButton.disabled=true;
+  navigator.geolocation.getCurrentPosition(position=>{
+   currentPosition=position;
+   nearbyButton.disabled=false;
+   status.textContent="Posizione acquisita. Mostro prima i luoghi salvati; i risultati esterni si aprono su Google Maps.";
+   renderResults(q,currentPosition);
+  },error=>{
+   currentPosition=null;nearbyButton.disabled=false;
+   status.textContent=error&&error.code===1?"Accesso alla posizione negato. Mostro i luoghi salvati; puoi autorizzare la posizione nelle impostazioni del browser.":"Non riesco a leggere la posizione. Mostro i luoghi salvati e puoi riprovare.";
+   renderResults(q,null);
+  },{enableHighAccuracy:false,timeout:12000,maximumAge:60000});
+ }
+ form.addEventListener("submit",event=>{event.preventDefault();search(input.value,false);});
+ nearbyButton.addEventListener("click",()=>search(input.value,true));
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initSavedPlaceSearch,{once:true});else initSavedPlaceSearch();
+
 const checklistItems=[
  {id:"shibuya-sky",text:"Controllare conferma Shibuya Sky · 27 ottobre, 15:40–15:59"},
  {id:"nikko-return",text:"Prenotare il rientro Tobu-Nikkō → Tokyo · 29 ottobre"},
